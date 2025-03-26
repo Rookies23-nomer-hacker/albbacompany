@@ -6,9 +6,6 @@ app = Flask(__name__)
 
 @app.route("/")
 def dashboard():
-    if "emp_id" not in session:
-        return redirect(url_for("login"))
-
     return '''
         <h2>사내 시스템 대시보드</h2>
         <p>파일 서버에서 파일을 가져오려면 아래 입력창에 파일명을 입력하세요.</p>
