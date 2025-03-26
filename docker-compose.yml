@@ -15,7 +15,7 @@ services:
     build:
       context: ./albbacompany_file
       dockerfile: Dockerfile
-    container_name: albbacompany_web
+    container_name: albbacompany_file
     networks:
       - albbacompany_network
     ports:
