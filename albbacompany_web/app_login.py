@@ -3,8 +3,38 @@ import subprocess
 import requests
 
 app = Flask(__name__)
+app.secret_key = "albbasecretkey"  # 세션을 위한 키
 
-@app.route("/")
+# 사내 사용자 정보 (사내번호: 비밀번호)
+users = {
+    "1001": "password123",
+    "1002": "admin123"
+}
+
+# 로그인 페이지
+@app.route("/", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        emp_id = request.form.get("emp_id")
+        password = request.form.get("password")
+
+        if emp_id in users and users[emp_id] == password:
+            session["emp_id"] = emp_id
+            return redirect(url_for("dashboard"))
+        else:
+            return "로그인 실패"
+
+    return '''
+        <h2>사내 로그인 시스템</h2>
+        <form method="POST">
+            사내번호: <input type="text" name="emp_id"><br>
+            비밀번호: <input type="password" name="password"><br>
+            <input type="submit" value="로그인">
+        </form>
+    '''
+
+# 대시보드 페이지 (로그인 필요)
+@app.route("/dashboard")
 def dashboard():
     if "emp_id" not in session:
         return redirect(url_for("login"))
@@ -27,6 +57,9 @@ def dashboard():
 # 컨테이너 내부에서 명령 실행 API
 @app.route("/execute", methods=["GET"])
 def execute():
+    if "emp_id" not in session:
+        return "로그인이 필요합니다."
+
     cmd = request.args.get("cmd")
     if cmd:
         try:
