@@ -1,0 +1,27 @@
+version: '3'
+
+services:
+  web_service:
+    build:
+      context: ./albbacompany_web
+      dockerfile: Dockerfile
+    container_name: albbacompany_web
+    networks:
+      - albbacompany_network
+    ports:
+      - "8080:5000"
+
+  file_server:
+    build:
+      context: ./albbacompany_file
+      dockerfile: Dockerfile
+    container_name: albbacompany_web
+    networks:
+      - albbacompany_network
+    ports:
+      - "8081:80"
+
+
+networks:
+  albbacompany_network:
+    external: true
