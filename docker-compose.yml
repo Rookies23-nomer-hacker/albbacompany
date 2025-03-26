@@ -10,6 +10,8 @@ services:
       - albbacompany_network
     ports:
       - "8080:5000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
 
   file_server:
     build:
