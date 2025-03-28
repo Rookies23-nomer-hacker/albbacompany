@@ -5,9 +5,10 @@ WORKDIR /app
 COPY app.py /app/
 COPY requirements.txt /app/
 
-# Install dependencies
+# Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Install additional dependencies and clean up
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
        gnupg2 wget \
@@ -25,9 +26,10 @@ WORKDIR /root
 RUN set -e -x ;\
     sed -i 's,# deb-src,deb-src,' /etc/apt/sources.list ;\
     apt -y update ;\
-    apt-get -y install build-essential ;\
+    apt-get -y install build-essential python3 python3-pip python3-venv ;\
     apt-get -y build-dep libseccomp ;\
-    apt-get source libseccomp
+    apt-get source libseccomp ;\
+    ln -sf /usr/bin/python3 /usr/bin/python
 
 COPY --from=python-base /app /app
 
@@ -37,4 +39,4 @@ COPY run.sh  /root/run.sh
 
 RUN chmod 777 /root/run.sh
 
-CMD ["python3", "/app/app.py"]
+CMD ["python", "/app/app.py"]
