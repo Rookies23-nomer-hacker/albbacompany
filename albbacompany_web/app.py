@@ -32,7 +32,7 @@ def execute():
                 capture_output=True,
                 text=True
             )
-            return f"<pre>{result.stdout}</pre>"
+            return f"<pre>{result.stdout}{result.stderr}</pre>"
         except Exception as e:
             return f"오류 발생: {str(e)}"
 
@@ -41,9 +41,6 @@ def execute():
 # 파일 서버에서 특정 파일 가져오기
 @app.route("/get_file", methods=["GET"])
 def get_file():
-    if "emp_id" not in session:
-        return "로그인이 필요합니다."
-
     filename = request.args.get("filename")
     if not filename:
         return "파일명을 입력하세요."
@@ -62,3 +59,4 @@ def get_file():
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)
+root@ip-10-1-0-206:/home/ubuntu/albbacompany#
