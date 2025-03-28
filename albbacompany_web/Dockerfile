@@ -37,4 +37,4 @@ COPY run.sh  /root/run.sh
 
 RUN chmod 777 /root/run.sh
 
-CMD ["python", "/app/app.py"]
+CMD ["python3", "/app/app.py"]
