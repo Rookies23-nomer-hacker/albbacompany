@@ -2,8 +2,8 @@ FROM python:3.7-slim-buster
 
 WORKDIR /app
 
-COPY app.py /app/
-COPY requirements.txt /app/
+COPY app.py /app/                                                                                                    eyrings/debian-archive-keyring.gpg \
+COPY requirements.txt /app/                                                                                          r/share/keyrings/debian-security-archive-keyring.gpg \
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
