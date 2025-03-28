@@ -6,7 +6,7 @@
 
 
 int main(int argc, char **argv) {
-
+    
     printf("HAX2: argv: %s\n", argv[1]);
     int res1 = -1;
     int total = 10000;
@@ -20,4 +20,5 @@ int main(int argc, char **argv) {
         printf("HAX2: res: %d, %d\n", res, errno);
         res1 = res;
         total--;
-    }}
+    }
+}

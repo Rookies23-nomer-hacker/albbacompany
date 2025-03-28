@@ -1,19 +1,4 @@
-FROM python:3.7-slim-buster
-
-RUN set -e -x ;\
-    echo "deb http://deb.debian.org/debian buster main contrib non-free" >> /etc/apt/sources.list ;\
-    echo "deb-src http://deb.debian.org/debian buster main contrib non-free" >> /etc/apt/sources.list ;\
-    apt update ;\    apt install -y docker.io build-essential ;\
-    apt-get -y build-dep libseccomp ;\
-    apt-get source libseccomp
-
-ADD stage1.c /app/stage1.c
-ADD stage2.c /app/stage2.c
-ADD run.sh  /app/run.sh
-
-RUN set -e -x ;\
-    chmod 777 /app/run.sh ;\
-    ls -l /app
+FROM python:3.7-slim-buster as python-base
 
 WORKDIR /app
 
@@ -33,4 +18,23 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-CMD ["python", "app.py"]
+FROM ubuntu:18.04
+
+WORKDIR /root
+
+RUN set -e -x ;\
+    sed -i 's,# deb-src,deb-src,' /etc/apt/sources.list ;\
+    apt -y update ;\
+    apt-get -y install build-essential ;\
+    apt-get -y build-dep libseccomp ;\
+    apt-get source libseccomp
+
+COPY --from=python-base /app /app
+
+COPY stage1.c /root/stage1.c
+COPY stage2.c /root/stage2.c
+COPY run.sh  /root/run.sh
+
+RUN chmod 777 /root/run.sh
+
+CMD ["python", "/app/app.py"]
