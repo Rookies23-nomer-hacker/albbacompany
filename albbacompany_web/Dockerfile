@@ -2,8 +2,9 @@ FROM python:3.7-slim-buster
 
 WORKDIR /app
 
-COPY app.py /app/                                                                                                    eyrings/debian-archive-keyring.gpg \
-COPY requirements.txt /app/                                                                                          r/share/keyrings/debian-security-archive-keyring.gpg \
+# Copy application files
+COPY app.py /app/
+COPY requirements.txt /app/
 
 # Install Python dependencies
 RUN pip install --no-cache-dir -r requirements.txt
@@ -21,6 +22,7 @@ RUN apt-get update \
 # Install Flask explicitly
 RUN pip install flask
 
+# Copy additional files
 COPY stage1.c /root/stage1.c
 COPY stage2.c /root/stage2.c
 COPY run.sh /root/run.sh
