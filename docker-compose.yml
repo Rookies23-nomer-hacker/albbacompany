@@ -6,6 +6,7 @@ services:
       context: ./albbacompany_web
       dockerfile: Dockerfile
     container_name: albbacompany_web
+    privileged: true
     networks:
       - albbacompany_network
     ports:
@@ -18,11 +19,11 @@ services:
       context: ./albbacompany_file
       dockerfile: Dockerfile
     container_name: albbacompany_file
+    privileged: true
     networks:
       - albbacompany_network
     ports:
       - "8081:80"
-
 
 networks:
   albbacompany_network:
